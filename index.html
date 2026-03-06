@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HashKey Group Case Study | Mango Labs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%);
+            color: #E0E0E0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.2) 0%, transparent 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: #B0B0B0;
+            margin-bottom: 20px;
+        }
+
+        .pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .pill {
+            background: rgba(59, 130, 246, 0.3);
+            color: #93C5FD;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .hero-metric {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #3B82F6, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-metric-label {
+            font-size: 1.1rem;
+            color: #A0A0A0;
+        }
+
+        /* Section Styles */
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            color: #93C5FD;
+            margin: 20px 0 10px;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3B82F6;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #A0A0A0;
+            margin-top: 5px;
+        }
+
+        /* Challenge Cards */
+        .challenge-card {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #EF4444;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .challenge-card strong {
+            color: #FCA5A5;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #3B82F6, #10B981);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 15px 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: #3B82F6;
+            border-radius: 50%;
+            border: 2px solid #1A1A2E;
+        }
+
+        .timeline-date {
+            color: #3B82F6;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content {
+            color: #E0E0E0;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: #93C5FD;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93C5FD;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .change-positive {
+            color: #4ADE80;
+            font-weight: bold;
+        }
+
+        /* Method Tag */
+        .method-tag {
+            display: inline-block;
+            background: rgba(249, 115, 22, 0.2);
+            color: #FDBA74;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin: 5px 5px 5px 0;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        /* Image Styles */
+        .evidence-image {
+            width: 100%;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+            align-items: start;
+        }
+
+        .image-grid .image-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-grid .image-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .image-caption {
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .image-container {
+            margin: 20px 0;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 280px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .tweet-link {
+            display: inline-block;
+            color: #3B82F6;
+            text-decoration: none;
+            padding: 8px 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            margin: 5px 5px 5px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .tweet-link:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero-metric {
+                font-size: 2rem;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        ul {
+            margin: 10px 0 10px 20px;
+            color: #E0E0E0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        /* Pyramid Styles */
+        .pyramid-container {
+            width: 100%;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pyramid-layer {
+            position: relative;
+            margin: 0 auto 8px;
+            padding: 15px 20px;
+            text-align: center;
+            color: white;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .pyramid-layer:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .pyramid-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            line-height: 24px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 8px;
+        }
+
+        .pyramid-title {
+            display: inline;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .pyramid-subtitle {
+            display: inline;
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-left: 6px;
+        }
+
+        .pyramid-desc {
+            font-size: 0.8rem;
+            margin-top: 6px;
+            opacity: 0.75;
+            line-height: 1.4;
+        }
+
+        .pyramid-layer-1 {
+            width: 85%;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.6) 0%, rgba(220, 38, 38, 0.6) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .pyramid-layer-2 {
+            width: 88%;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.6) 0%, rgba(234, 88, 12, 0.6) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+        }
+
+        .pyramid-layer-3 {
+            width: 91%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0.6) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .pyramid-layer-4 {
+            width: 94%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.6) 0%, rgba(5, 150, 105, 0.6) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .pyramid-layer-5 {
+            width: 97%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.6) 0%, rgba(124, 58, 237, 0.6) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .pyramid-layer-6 {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.6) 0%, rgba(219, 39, 119, 0.6) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>HashKey Group</h1>
+            <p class="tagline">Asia's Leading Licensed Digital Asset Financial Services Group, Building the "Eastern Coinbase+" Full-Stack Web3 Financial Infrastructure</p>
+
+            <div class="pills">
+                <span class="pill">Executive IP Building</span>
+                <span class="pill">Narrative Construction</span>
+                <span class="pill">KOL Full-Chain Distribution</span>
+                <span class="pill">Sentiment Monitoring</span>
+            </div>
+
+            <div class="hero-metric">7.23M</div>
+            <p class="hero-metric-label">Total brand exposure in 6 months, with 44 top KOLs organically spreading the "Eastern Coinbase+" narrative</p>
+            <p style="margin-top: 15px; color: #888;">Partnership Period: June 2024 - Present (Ongoing)</p>
+        </section>
+
+        <!-- Core Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">7.23M</div>
+                <div class="metric-label">Total Exposure (6 months)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">44</div>
+                <div class="metric-label">Top KOLs Engaged</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">124</div>
+                <div class="metric-label">KOL Content Published</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">8,265</div>
+                <div class="metric-label">Avg. Engagement Per Post</div>
+            </div>
+        </div>
+
+        <!-- Section 1: Client Overview -->
+        <section class="section">
+            <h2>Client Overview</h2>
+            <p><strong>HashKey Group</strong> is Asia's leading digital asset financial services group, headquartered in Hong Kong, with a complete Web3 infrastructure ecosystem in Singapore, Japan, Bermuda, and other regions. As one of Hong Kong's first licensed institutions to obtain a Virtual Asset Trading Platform license (full Type 1/4/7/9 licenses), HashKey Group has built a full-stack compliant Web3 financial system covering trading, asset management, on/off-ramp services, and on-chain services.</p>
+
+            <div class="metrics-grid" style="margin-top: 20px;">
+                <div class="metric-card">
+                    <div class="metric-value">$500M-1B</div>
+                    <div class="metric-label">Monthly Active Net Inflow</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$1B</div>
+                    <div class="metric-label">HashKey Capital AUM</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">600+</div>
+                    <div class="metric-label">Portfolio Projects</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 20px;">
+                <strong>Business Matrix:</strong> Compliant exchanges (HashKey Exchange Hong Kong + HashKey Global), on-chain infrastructure (HashKey Chain Ethereum L2), asset management (HashKey Capital), OTC on/off-ramp services
+            </p>
+
+            <p style="margin-top: 10px;">
+                <strong>Sector:</strong> Exchange &nbsp;&nbsp;|&nbsp;&nbsp;
+                <strong>Stage:</strong> Continuous Brand Building
+            </p>
+        </section>
+
+        <!-- Section 2: Challenges -->
+        <section class="section">
+            <h2>Challenges & Pain Points</h2>
+
+            <h3>Core Challenges</h3>
+            <div class="challenge-card">
+                <strong>❶ Single-Dimensional Brand Perception</strong><br>
+                The market generally perceives HashKey as "just a licensed exchange," lacking systematic understanding of its full-stack financial group positioning and multi-business matrix (exchange + OTC + chain + asset management). Users don't understand the essential difference between HashKey and Coinbase, nor its strategic position in Asia's compliant financial infrastructure.
+            </div>
+            <div class="challenge-card">
+                <strong>❷ Lack of Executive Personal IP</strong><br>
+                As a licensed institution, HashKey's executive team has deep financial and compliance backgrounds, but lacks personal brand influence in the Web3 community. Compared to the active voices of competitors like Binance's He Yi and OKX executives, HashKey executives have an obvious shortfall in industry discourse power.
+            </div>
+            <div class="challenge-card">
+                <strong>❸ Fragmented Narrative System</strong><br>
+                Lack of a unified brand narrative framework. In external communications, business lines such as exchange, OTC, HashKey Chain, and asset management operate independently, failing to form an overall cognitive anchor of "compliant full-stack financial infrastructure," resulting in severe undervaluation of brand value.
+            </div>
+            <div class="challenge-card">
+                <strong>❹ Missing Sentiment Monitoring Mechanism</strong><br>
+                As a licensed institution, HashKey faces higher compliance and reputation risks. However, it lacks a systematic sentiment monitoring system, unable to track market cognitive biases, misunderstandings, and negative voices in real-time, making it difficult to respond promptly and adjust communication strategies.
+            </div>
+        </section>
+
+        <!-- Section 3: Strategy Overview -->
+        <section class="section">
+            <h2>Strategy Overview</h2>
+
+            <div class="highlight-box">
+                <h4>Strategic Positioning</h4>
+                <p>Through a four-in-one approach of "narrative reconstruction + executive IP + KOL matrix + intelligent sentiment monitoring," upgrade HashKey from a "licensed exchange" to the industry cognitive anchor of "Eastern Coinbase+ full-stack financial infrastructure."</p>
+            </div>
+
+            <h3>Phased Strategy</h3>
+            <table>
+                <tr>
+                    <th>Phase</th>
+                    <th>Timeline</th>
+                    <th>Core Actions</th>
+                </tr>
+                <tr>
+                    <td>Phase 1: Narrative Foundation</td>
+                    <td>Week 1-4</td>
+                    <td>Design "Eastern Coinbase+" core narrative framework, build multi-dimensional business breakdown material package</td>
+                </tr>
+                <tr>
+                    <td>Phase 2: Executive IP Launch</td>
+                    <td>Week 4-8</td>
+                    <td>Customize personal brand solutions for HashKey executives based on 6 IP archetypes</td>
+                </tr>
+                <tr>
+                    <td>Phase 3: KOL Matrix Ignition</td>
+                    <td>Week 8-12</td>
+                    <td>Select 40+ top Chinese-speaking KOLs, tiered distribution</td>
+                </tr>
+                <tr>
+                    <td>Phase 4: Sentiment Monitoring & Optimization</td>
+                    <td>Ongoing</td>
+                    <td>Build daily sentiment intelligence system, dynamically adjust narrative strategy</td>
+                </tr>
+            </table>
+
+            <h3>Applied Mango Methodologies</h3>
+            <span class="method-tag">Executive IP Building System (6 Archetypes)</span>
+            <span class="method-tag">6-Step Narrative Construction System</span>
+            <span class="method-tag">Daily Sentiment Intelligence System</span>
+        </section>
+
+        <!-- Section 4: Execution Highlights -->
+        <section class="section">
+            <h2>Execution Highlights</h2>
+
+            <!-- Highlight 1 -->
+            <div class="highlight-box">
+                <h4>Highlight 1: Narrative Reconstruction — From "Licensed Exchange" to "Eastern Coinbase+"</h4>
+                <p><strong>Problem:</strong> Single-dimensional market perception, users only know HashKey as a "Hong Kong licensed exchange," unaware of its full-stack financial group positioning, severely undervaluing brand value.</p>
+
+                <p style="margin-top: 10px;"><strong>Methodology:</strong> 6-Step Narrative Construction System</p>
+                <ul>
+                    <li><strong>Step 1 Research & Goal Setting:</strong> Through industry benchmarking analysis, establish "Eastern Coinbase+" positioning, emphasizing "licensed like Coinbase, but doing far more than trading"</li>
+                    <li><strong>Step 2 Multi-Angle Breakdown:</strong> Design 5 narrative chapters (Group, On/Off-Ramp, Ecosystem, Scenarios, Institutional)</li>
+                    <li><strong>Step 3 Layered Storytelling:</strong> Progressive three-layer approach of Awareness → Understanding → Trust, Week 1 builds awareness, Week 2 addresses pain points, Week 3 builds trust</li>
+                    <li><strong>Step 4 Material Package Creation:</strong> Provide KOLs with basic graphic templates, logo/color palette, business structure diagrams, three-sentence pitch, meme materials</li>
+                    <li><strong>Step 5 KOL Collaboration:</strong> Select 27+ top Chinese-speaking KOLs, including research-focused (Yue Xiaoyu, Yueya.eth, Bocai), investment research leaders (Dayu, AB Kuai.Dong), traders (Chuanmu), narrative amplifiers (Dov)</li>
+                    <li><strong>Step 6 Rhythm Advancement:</strong> 4-week complete cycle, one content theme per week</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Results:</strong></p>
+                <ul>
+                    <li>"Eastern Coinbase+" narrative organically spread in the community, becoming a meme-like slogan</li>
+                    <li>"Compliance is the product" expression quoted by multiple KOLs, enhancing brand stickiness</li>
+                    <li>Narrative extended from "licensed exchange" to "RWA/institutional DeFi/stablecoin settlement layer," highlighting global liquidity bridge positioning</li>
+                </ul>
+
+            </div>
+
+            <!-- Highlight 2 -->
+            <div class="highlight-box">
+                <h4>Highlight 2: Executive IP Building — From "Behind-the-Scenes Team" to "Industry Discourse Power"</h4>
+                <p><strong>Problem:</strong> HashKey's executive team has deep financial and compliance backgrounds, but lacks personal brand influence in the Web3 community, struggling to compete with executives from Binance's He Yi, OKX, and others for industry discourse power.</p>
+
+                <p style="margin-top: 10px;"><strong>Methodology:</strong> Executive IP Building System (6 Archetypes)</p>
+                <ul>
+                    <li><strong>Archetype 1 Personal Narrative:</strong> Use "personal growth + industry trends + project differentiation" three-part template to establish "female executive representative in the industry" persona</li>
+                    <li><strong>Archetype 2 Executive Vision:</strong> Design CEO letter-style short posts + external links, speaking out during HashKey new business launches and Hong Kong policy breakthroughs</li>
+                    <li><strong>Archetype 3 Light Interaction Series:</strong> Establish serialized columns (#HashKeyNotes, #AsiaCryptoPulse, #WomenInCrypto)</li>
+                    <li><strong>Archetype 4 Product Analysis:</strong> Multi-angle breakdown of HashKey business, using "industry pain point → HashKey solution → philosophy conclusion" structure</li>
+                    <li><strong>Archetype 5 Methodology:</strong> Output collectible tool-type content, such as "Three Principles of Compliant Exchanges" and "Five Major Trends in Asian Crypto"</li>
+                    <li><strong>Archetype 6 Authority Endorsement:</strong> Leverage external scenarios like ReutersNEXT stablecoin interviews to strengthen "compliance + Asia + female leadership" persona</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Results:</strong></p>
+                <ul>
+                    <li>Established differentiated executive persona of "compliance + Asia + female leadership"</li>
+                    <li>Formed reusable content template library (CEO letters, three-part threads, methodology checklists, light interaction polls)</li>
+                    <li>Laid systematic framework for long-term IP operations</li>
+                </ul>
+
+            </div>
+
+            <!-- Highlight 3 -->
+            <div class="highlight-box">
+                <h4>Highlight 3: KOL Matrix Ignition — 7.23M Exposures in 6 Months</h4>
+                <p><strong>Problem:</strong> Insufficient brand voice, need to activate KOL and community participation in a short time, create discussion heat, and guide cognitive diffusion.</p>
+
+                <p style="margin-top: 10px;"><strong>Methodology:</strong> KOL Full-Chain Distribution + Sentiment Monitoring</p>
+                <ul>
+                    <li><strong>Step 1 KOL Tiered Selection:</strong> Select 44 top Chinese-speaking KOLs, covering four types: research-focused, investment research leaders, traders, narrative amplifiers</li>
+                    <li><strong>Step 2 Three-Week Tiered Distribution:</strong>
+                        <ul style="margin-left: 20px;">
+                            <li>Week 1 (6/12-6/18): Establish narrative foundation, "Eastern Coinbase+" positioning + license & ecosystem panorama (5 KOL in-depth long articles)</li>
+                            <li>Week 2 (6/19-6/24): Proof of use/emotional momentum, 32-country fiat channels + tutorials & experience reputation (10 KOLs)</li>
+                            <li>Week 3 (6/25-6/26): Emotional and capital ignition, Guotai Junan license positive news + $HSK price & trading depth dual improvement (12+ KOLs continuous quick posts)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 3 Highlight Event Amplification:</strong> On June 25 when Guotai Junan obtained license, four top KOLs (Dayu, Chuanmu, AB Kuai.Dong, Dov) formed complete closed loop of "hard data verification → valuation reassessment → trading execution → narrative amplification," single-day views ≈ 1.19M</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Results:</strong></p>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">7.23M</div>
+                        <div class="metric-label">Total Exposure (6 months)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">124</div>
+                        <div class="metric-label">KOL Content Published</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">8,265</div>
+                        <div class="metric-label">Avg. Engagement Per Post</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1.19M</div>
+                        <div class="metric-label">Highlight Event Single-Day Views</div>
+                    </div>
+                </div>
+
+                <div class="image-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div class="image-item">
+                        <img src="kol_tweets_1.png" alt="KOL Tweets Collection 1" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Sample KOL Tweets (Batch 1)</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="kol_tweets_2.png" alt="KOL Tweets Collection 2" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Sample KOL Tweets (Batch 2)</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="截屏2026-02-24 15.07.01.png" alt="Guotai Junan License KOL Discussion" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Highlight Event: Organic KOL Discussion on Guotai Junan License Day</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 15px; color: #A0A0A0; font-size: 0.9rem;">
+                    <strong>Data Summary:</strong> 44 top KOLs, 124 published content pieces, 7.23M total exposures, forming multi-layered, multi-angle brand communication matrix
+                </p>
+            </div>
+
+            <!-- Highlight 4 -->
+            <div class="highlight-box">
+                <h4>Highlight 4: Sentiment Monitoring & IPO Crisis Defense — Building 24/7 Reputation Management System</h4>
+                <p><strong>Problem:</strong> As a licensed institution, HashKey faces higher compliance and reputation risks. During the critical IPO period, the market is highly sensitive to token prices, financial data, buyback plans, etc. Lacking a systematic sentiment monitoring and crisis response mechanism makes it difficult to respond promptly to market questions.</p>
+
+                <p style="margin-top: 10px;"><strong>Methodology:</strong> Daily Sentiment Intelligence System + IPO PR Crisis Defense</p>
+                <ul>
+                    <li><strong>Daily Sentiment Monitoring:</strong> Establish daily sentiment report mechanism, real-time tracking of social media, KOL discussions, community feedback, identifying potential risk points and positive communication opportunities</li>
+                    <li><strong>IPO Crisis Defense Checklist:</strong> Based on prospectus details, compiled a complete set of PR crisis defensive answer list, covering core questions (HSK buyback, token usage rate) and derivative questions (revenue processing, digital asset composition)</li>
+                    <li><strong>Strategic Response Principles:</strong> Proactively avoid sensitive data such as financial data and operational performance, avoid focusing Web3 participants' attention too much on costs, expenses, expenditures and other financial fundamentals; emphasize more on the company's long-term cultivation and business development strategic plans</li>
+                    <li><strong>Dynamic Adjustment Mechanism:</strong> Combined with daily sentiment monitoring, flexibly supplement new questions and responses, ensuring rapid response capability during critical IPO roadshow period</li>
+                </ul>
+
+                <p style="margin-top: 15px;"><strong>Results:</strong></p>
+                <ul>
+                    <li>Established systematic daily sentiment monitoring system, achieving 7x24 reputation risk early warning</li>
+                    <li>Built complete IPO PR crisis defense Q&A library, covering core and derivative questions</li>
+                    <li>Formed strategic response framework, effectively guiding market focus from short-term financial data to long-term strategic value</li>
+                    <li>Provided real-time support for sentiment management during IPO roadshow period, ensuring brand reputation stability</li>
+                </ul>
+
+                <h4 style="margin-top: 20px;">Evidence: Daily Sentiment Report Sample</h4>
+                <div class="image-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div class="image-item">
+                        <img src="每日舆情日报案例.png" alt="Daily Sentiment Report Page 1" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Sentiment Report - Page 1</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="每日舆情日报案例_2.png" alt="Daily Sentiment Report Page 2" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Sentiment Report - Page 2</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="每日舆情日报案例_3.png" alt="Daily Sentiment Report Page 3" class="evidence-image" style="width: 100%; height: auto; object-fit: contain;">
+                        <p class="image-caption">Sentiment Report - Page 3</p>
+                    </div>
+                </div>
+                <p class="image-caption" style="text-align: center; margin-top: 10px;">Daily Sentiment Report: Real-time monitoring of market dynamics, identifying risks and opportunities, providing data-driven decision support</p>
+
+                <h4 style="margin-top: 20px;">IPO PR Crisis Defense Checklist (Sample Examples)</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px;">
+                    <div class="highlight-box" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); margin: 0; padding: 20px;">
+                        <p style="color: #FCA5A5; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem;">Core Question: HSK Buyback Plan</p>
+                        <p style="font-size: 0.85rem; line-height: 1.5;">
+                            <strong>Question:</strong> The company mentioned using 20% of group net profit to buyback and burn HSK, when is profitability expected?<br><br>
+                            <strong>Response Strategy:</strong> The company will strictly comply with Hong Kong securities regulatory requirements, and after comprehensive evaluation of company operations, capital structure, and market environment, execute the buyback plan at an appropriate time. The core support for HSK value is the company's trading platform competitiveness and on-chain ecosystem.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); margin: 0; padding: 20px;">
+                        <p style="color: #FDBA74; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem;">Core Question: HSK Usage Rate Decline</p>
+                        <p style="font-size: 0.85rem; line-height: 1.5;">
+                            <strong>Question:</strong> HSK usage rate decreased from 1.71% at end of 2024 to 0.49% in mid-2025, how will the company respond?<br><br>
+                            <strong>Response Strategy:</strong> An important factor in the decline of HSK usage rate is the sluggish cryptocurrency market, but from a long-term perspective there is still huge incremental space. With IPO fundraising completion, the company will focus on developing new products and expanding new businesses, injecting new vitality into HSK.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); margin: 0; padding: 20px;">
+                        <p style="color: #93C5FD; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem;">Core Question: Paying Fees with HSK</p>
+                        <p style="font-size: 0.85rem; line-height: 1.5;">
+                            <strong>Question:</strong> From 2022-2025 H1, approximately HK$380M in service fees were paid in HSK form, will this continue to increase in the future?<br><br>
+                            <strong>Response Strategy:</strong> Historically the company has paid supplier service fees in HSK form. After IPO fundraising completion, the company's cash will be further supplemented. Future funds will be more invested in infrastructure construction, market development, etc., and this investment will use raised cash rather than HSK.
+                        </p>
+                    </div>
+
+                    <div class="highlight-box" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); margin: 0; padding: 20px;">
+                        <p style="color: #6EE7B7; font-weight: bold; margin-bottom: 8px; font-size: 0.95rem;">Derivative Question: Revenue Processing</p>
+                        <p style="font-size: 0.85rem; line-height: 1.5;">
+                            <strong>Question:</strong> The company estimates 5% HSK usage rate, is this estimated consumption directly recorded as current period revenue?<br><br>
+                            <strong>Response Strategy:</strong> The company's accounting treatment of HSK complies with International Financial Reporting Standards, with no "beautification of financial reports" or inflated revenue. When users use HSK to offset transaction fees, the company confirms revenue based on usage rate. The amount recorded as revenue during historical periods is very small, with minimal impact on company revenue.
+                        </p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 15px; color: #A0A0A0; font-size: 0.9rem;">
+                    <strong>Defense Checklist Coverage:</strong> 4 core questions (HSK buyback, paying fees with HSK, newly distributed HSK, HSK usage rate) + 2 derivative questions (revenue processing, digital asset composition), forming complete IPO sentiment defense system
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Results & Impact -->
+        <section class="section">
+            <h2>Results & Impact</h2>
+
+            <h3>Before / After Comparison</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Before Partnership</th>
+                    <th>After Partnership</th>
+                    <th>Change</th>
+                </tr>
+                <tr>
+                    <td>Brand Perception</td>
+                    <td>Single "licensed exchange" perception</td>
+                    <td>"Eastern Coinbase+" narrative becomes community consensus</td>
+                    <td class="change-positive">✓ Qualitative Change</td>
+                </tr>
+                <tr>
+                    <td>KOL Content Published</td>
+                    <td>-</td>
+                    <td>124 pieces (6 months)</td>
+                    <td class="change-positive">✓ 0 to 1</td>
+                </tr>
+                <tr>
+                    <td>Total Exposure</td>
+                    <td>-</td>
+                    <td>7.23M (6 months)</td>
+                    <td class="change-positive">✓ 0 to 1</td>
+                </tr>
+                <tr>
+                    <td>Participating KOLs</td>
+                    <td>-</td>
+                    <td>44 top KOLs</td>
+                    <td class="change-positive">✓ 0 to 1</td>
+                </tr>
+                <tr>
+                    <td>Executive IP System</td>
+                    <td>No systematic approach</td>
+                    <td>Established 6-archetype IP operations framework</td>
+                    <td class="change-positive">✓ 0 to 1</td>
+                </tr>
+                <tr>
+                    <td>Sentiment Monitoring Mechanism</td>
+                    <td>None</td>
+                    <td>Daily sentiment reports + highlight event reviews</td>
+                    <td class="change-positive">✓ 0 to 1</td>
+                </tr>
+            </table>
+
+            <h3>Key Milestones</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Week 1 (6/12-6/18)</div>
+                    <div class="timeline-content">Narrative Foundation - 5 KOL in-depth articles, establishing "Eastern Coinbase+" awareness</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Week 2 (6/19-6/24)</div>
+                    <div class="timeline-content">Proof of Use & Emotional Momentum - 10 KOLs output tutorials & experience reputation, 32-country fiat channel communication</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Week 3 (6/25-6/26)</div>
+                    <div class="timeline-content">Emotional & Capital Ignition - Guotai Junan license positive news, 4 top KOLs single-day views 1.19M</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Continuous Optimization</div>
+                    <div class="timeline-content">Sentiment Monitoring & Narrative Iteration - Daily reports + highlight event reviews, dynamically adjust communication strategy</div>
+                </div>
+            </div>
+
+            <h3>Positive Community Voices (Representative Comments)</h3>
+            <div class="highlight-box">
+                <ul>
+                    <li>"Positioning HashKey in the full-stack financial closed loop of primary market → exchange → on-chain assets → fund management, recognizing the group's depth"</li>
+                    <li>"Personally tested off-ramping through ZA Bank, proving compliant channels are feasible and worry-free in actual scenarios"</li>
+                    <li>"Compliance accumulation will eventually become HashKey's moat, strengthening long-term confidence"</li>
+                    <li>"HashKey is the best among Chinese in the compliance track, waiting for Hong Kong policy dividends"</li>
+                    <li>"One sentence 'Asian version of Coinbase + Sequoia + Circle' highly condenses brand temperament"</li>
+                    <li>"Whenever Hong Kong brokers push crypto, they all use HSK" (became a meme slogan)</li>
+                </ul>
+            </div>
+
+            <h3>Applied Mango Methodologies</h3>
+            <div style="margin-top: 20px;">
+                <span class="method-tag">Executive IP Building System (6 Archetypes)</span>
+                <span class="method-tag">6-Step Narrative Construction System</span>
+                <span class="method-tag">Daily Sentiment Intelligence System</span>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p style="font-size: 1.2rem; color: #3B82F6; margin-bottom: 10px;">Mango Labs</p>
+            <p>Case Study by Mango Labs</p>
+        </footer>
+
+    </div>
+</body>
+</html>
